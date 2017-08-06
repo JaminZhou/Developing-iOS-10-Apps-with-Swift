@@ -175,7 +175,14 @@ class DownloadSessionManager : NSObject, URLSessionDownloadDelegate {
 class iTunesUController {
     
     class func getVideoResourceURLs(fromHTML: String) -> ([String]) {
-        let pat = "\\b.*(https://.*\\.m4v)\\b"
+        var list = [String]()
+        list.append(contentsOf: getResourceURLs(fromHTML: fromHTML, fileExtension: "m4v"))
+        list.append(contentsOf: getResourceURLs(fromHTML: fromHTML, fileExtension: "mp4"))
+        return list
+    }
+    
+    class func getResourceURLs(fromHTML: String, fileExtension: String)  -> ([String]) {
+        let pat = "\\b.*(https://.*\\." + fileExtension + ")\\b"
         let regex = try! NSRegularExpression(pattern: pat, options: [])
         let matches = regex.matches(in: fromHTML, options: [], range: NSRange(location: 0, length: fromHTML.characters.count))
         var resourceURLs = [String]()
@@ -188,22 +195,7 @@ class iTunesUController {
         
         return resourceURLs
     }
-    
-    class func getVideoResourceURL(fromHTML: String) -> (String) {
-        let pat = "\\b.*(https://.*\\.m4v)\\b"
-        let regex = try! NSRegularExpression(pattern: pat, options: [])
-        let matches = regex.matches(in: fromHTML, options: [], range: NSRange(location: 0, length: fromHTML.characters.count))
-        var pdfResourceURL = ""
-        if !matches.isEmpty {
-            let range = matches[0].rangeAt(1)
-            let r = fromHTML.index(fromHTML.startIndex, offsetBy: range.location) ..<
-                fromHTML.index(fromHTML.startIndex, offsetBy: range.location+range.length)
-            pdfResourceURL = fromHTML.substring(with: r)
-        }
-        
-        return pdfResourceURL
-    }
-    
+
     class func getStringContent(fromURL: String) -> (String) {
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
         var result = ""
