@@ -85,7 +85,7 @@ class DownloadSessionManager : NSObject, URLSessionDownloadDelegate {
         }
     }
     
-  func show(progress: Int, barWidth: Int, speedInK: Int) {
+    func show(progress: Int, barWidth: Int, speedInK: Int) {
         print("\r[", terminator: "")
         let pos = Int(Double(barWidth*progress)/100.0)
         for i in 0...barWidth {
@@ -105,7 +105,7 @@ class DownloadSessionManager : NSObject, URLSessionDownloadDelegate {
         print("] \(progress)% \(speedInK)KB/s", terminator:"")
         fflush(__stdoutp)
     }
-
+    
     var taskStartedAt : Date?
     //MARK : URLSessionDownloadDelegate
     func urlSession(_: URLSession,
@@ -113,9 +113,9 @@ class DownloadSessionManager : NSObject, URLSessionDownloadDelegate {
                     didWriteData bytesWritten: Int64,
                     totalBytesWritten: Int64,
                     totalBytesExpectedToWrite: Int64) {
-      let now = Date()
-      let timeDownloaded = now.timeIntervalSince(taskStartedAt!)
-      let kbs = Int( floor( Float(totalBytesWritten) / 1024.0 / Float(timeDownloaded) ) )
+        let now = Date()
+        let timeDownloaded = now.timeIntervalSince(taskStartedAt!)
+        let kbs = Int( floor( Float(totalBytesWritten) / 1024.0 / Float(timeDownloaded) ) )
         show(progress: Int(Double(totalBytesWritten)/Double(totalBytesExpectedToWrite)*100.0), barWidth: 70, speedInK: kbs)
     }
     
@@ -184,18 +184,18 @@ class iTunesUController {
     class func getResourceURLs(fromHTML: String, fileExtension: String)  -> ([String]) {
         let pat = "\\b.*(https://.*\\." + fileExtension + ")\\b"
         let regex = try! NSRegularExpression(pattern: pat, options: [])
-        let matches = regex.matches(in: fromHTML, options: [], range: NSRange(location: 0, length: fromHTML.characters.count))
+        let matches = regex.matches(in: fromHTML, options: [], range: NSRange(location: 0, length: fromHTML.count))
         var resourceURLs = [String]()
         for match in matches {
-            let range = match.rangeAt(1)
+            let range = match.range(at:1)
             let r = fromHTML.index(fromHTML.startIndex, offsetBy: range.location) ..< fromHTML.index(fromHTML.startIndex, offsetBy: range.location+range.length)
-            let url = fromHTML.substring(with: r)
-            resourceURLs.append(url)
+            let url = fromHTML[r]
+            resourceURLs.append(String(url))
         }
         
         return resourceURLs
     }
-
+    
     class func getStringContent(fromURL: String) -> (String) {
         let session = URLSession(configuration: URLSessionConfiguration.default, delegate: nil, delegateQueue: nil)
         var result = ""
