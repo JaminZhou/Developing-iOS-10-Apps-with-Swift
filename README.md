@@ -1,6 +1,6 @@
 # Developing iOS 10 Apps with Swift
 
-iTunes U 课程地址：[iTunes U/Developing iOS 10 Apps Swift](https://itunes.apple.com/us/course/developing-ios-10-apps-with-swift/id1198467120)
+iTunes U 课程地址：[iTunes U/Developing iOS 10 Apps Swift](https://itunes.apple.com/cn/course/developing-ios-10-apps-with-swift/id1198467120)
 
 CS193P 课程地址：[CS193P iPhone Application Development](http://web.stanford.edu/class/cs193p/cgi-bin/drupal/)
 
